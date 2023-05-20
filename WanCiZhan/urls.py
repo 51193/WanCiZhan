@@ -24,6 +24,6 @@ urlpatterns = [
     path('back/', users.views.back, name="back"),
     path('login/', users.views.home, name="login"),
     path('login/<slug:kind>', users.views.login, name="login"),
-    path('register/', users.views.register, name='register'),
+    path('register/<slug:kind>', users.views.register, name='register'),
 
 ]

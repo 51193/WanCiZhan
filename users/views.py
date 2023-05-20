@@ -1,8 +1,13 @@
+# 导入响应
 from django.shortcuts import render, HttpResponse, reverse, redirect
-
+# 导入常量
 from constants import INVALID_KIND
-from users.forms import UserLoginForm, AdminLoginForm
+# 导入格式
+from users.forms import UserLoginForm, AdminLoginForm, UserRegisterForm, AdminRegisterForm
+# 导入模型
 from users.models import Admin, User
+# 导入视图函数
+from django.views.generic import CreateView
 
 
 # Create your views here.
@@ -74,5 +79,56 @@ def login(request, *args, **kwargs):
         return render(request, 'login_detail.html', context)
 
 
-def register(request):
-    return HttpResponse("注册页面")
+class CreateUserView(CreateView):
+    model = User
+    form_class = UserRegisterForm
+    # fields = "__all__"
+    template_name = "register.html"
+    success_url = "login"
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            self.object = None
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        # order_by默认升序排列，number前的负号表示降序排列
+        user_set = User.objects.filter().order_by("-client_number")
+        if user_set.count() > 0:
+            last_user = user_set[0]
+            new_client_number = str(int(last_user.client_number) + 1)
+            for i in range(10 - len(new_client_number)):
+                new_client_number = "0" + new_client_number
+        else:
+            new_client_number = "0000000001"
+
+        # Create, but don't save the new user instance.
+        new_user = form.save(commit=False)
+        # Modify the student
+        new_user.client_number = new_client_number
+        # Save the new instance.
+        new_user.save()
+        # Now, save the many-to-many data for the form.
+        form.save_m2m()
+
+        self.object = new_user
+
+        from_url = "register"
+        base_url = reverse(self.get_success_url(), kwargs={'kind': 'User'})
+        return redirect(base_url + '?uid=%s&from_url=%s' % (new_client_number, from_url))
+
+
+def register(request, kind):
+    func = None
+    if kind == "User":
+         func = CreateUserView.as_view()
+
+    if func:
+        return func(request)
+    else:
+        return HttpResponse(INVALID_KIND)
+
