@@ -34,22 +34,3 @@ class UserRegisterForm(forms.ModelForm):
             self.add_error('confirm_password', 'Password does not match.')
 
         return cleaned_data
-
-
-class AdminRegisterForm(forms.ModelForm):
-    confirm_password = forms.CharField(widget=forms.PasswordInput(), label="确认密码")
-
-    class Meta:
-        model = Admin
-        fields = ('nick_name',
-                  'password',
-                  'confirm_password',
-                  'gender',
-                  'email')
-
-    def clean(self):
-        cleaned_data = super(AdminRegisterForm, self).clean()
-        password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
-        if confirm_password != password:
-            self.add_error('confirm_password', 'Password does not match.')

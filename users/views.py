@@ -3,7 +3,7 @@ from django.shortcuts import render, HttpResponse, reverse, redirect
 # 导入常量
 from constants import INVALID_KIND
 # 导入格式
-from users.forms import UserLoginForm, AdminLoginForm, UserRegisterForm, AdminRegisterForm
+from users.forms import UserLoginForm, AdminLoginForm, UserRegisterForm
 # 导入模型
 from users.models import Admin, User
 # 导入视图函数
@@ -55,7 +55,7 @@ def login(request, *args, **kwargs):
                         # successful login
                         # to_url = reverse("course", kwargs={'kind': kind})
                         # return redirect(to_url)
-                        return HttpResponse(user.nick_name + "登录成功");
+                        return HttpResponse(user.nick_name + "登录成功")
 
             return render(request, 'login_detail.html', {'form': form, 'kind': kind})
     else:
@@ -82,7 +82,6 @@ def login(request, *args, **kwargs):
 class CreateUserView(CreateView):
     model = User
     form_class = UserRegisterForm
-    # fields = "__all__"
     template_name = "register.html"
     success_url = "login"
 
@@ -125,10 +124,9 @@ class CreateUserView(CreateView):
 def register(request, kind):
     func = None
     if kind == "User":
-         func = CreateUserView.as_view()
+        func = CreateUserView.as_view()
 
     if func:
         return func(request)
     else:
         return HttpResponse(INVALID_KIND)
-
