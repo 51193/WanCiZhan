@@ -2,7 +2,7 @@ from pprint import pprint
 
 from django.forms import model_to_dict
 from django.shortcuts import render
-from vocabularies.models import Vocabulary, VocabularyBook
+from vocabularies.models import *
 
 
 # Create your views here.
@@ -41,6 +41,17 @@ def display_vocabularies_in_book(book_name):
         print(vocabulary[i])
 
 
+def personal_vocabularies(client_number):
+    return PersonalVocabularyBook.objects.filter(client_number=client_number).values()
+
+
+def display_personal_vocabularies(client_number):
+    print('正在输出client_number为:' + str(client_number) + ' 用户的单词本')
+    personal_vocabulary = personal_vocabularies(client_number)
+    for i in range(personal_vocabulary.count()):
+        print(personal_vocabulary[i])
+
+
 def add_vocabulary(vocabulary, translation, sentence, sentence_translation):
     vocabulary = Vocabulary(
         vocabulary=vocabulary,
@@ -73,3 +84,22 @@ def distribute_vocabulary(vocabulary, vocabulary_book):
                 book_name=vocabulary_book).values()[0]['code'])
     else:
         print("目标单词或单词书不存在\n")
+
+
+def handle_vocabulary(client_number, vocabulary, is_remembered):
+    if PersonalVocabularyBook.objects.filter(client_number=client_number).filter(vocabulary=vocabulary).exists():
+        PersonalVocabularyBook.objects.filter(client_number=client_number).filter(vocabulary=vocabulary).update(
+            is_remembered=is_remembered)
+
+    else:
+        p = PersonalVocabularyBook(
+            client_number=client_number,
+            vocabulary=vocabulary,
+            is_remembered=is_remembered
+        )
+        p.save()
+
+
+def today_vocabularies(client_number, book_name, today_number):
+    # 明天继续写
+    return 0

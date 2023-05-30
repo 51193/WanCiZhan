@@ -16,7 +16,8 @@ class VocabularyBook(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['code'], name='code')
+            models.UniqueConstraint(fields=['code'], name='code'),
+            models.UniqueConstraint(fields=['book_name'], name='book_name')
         ]
 
     def __str__(self):
@@ -44,11 +45,11 @@ class Vocabulary(models.Model):
         return self.vocabulary
 
 
-class PersonalVocabularyBook:
-    client_number = models.ForeignKey('users.User', on_delete=models.CASCADE)
-    vocabulary = models.ForeignKey('Vocabulary', on_delete=models.CASCADE)
+class PersonalVocabularyBook(models.Model):
+    client_number = models.CharField(max_length=20, verbose_name="账号")
+    vocabulary = models.CharField(max_length=50, verbose_name="单词")
     first_met_date = models.DateField(None, None, False, True)
     last_met_date = models.DateField(None, None, True, False)
-    is_remembered=models.BooleanField()
+    is_remembered = models.BooleanField()
 
     objects = models.Manager()

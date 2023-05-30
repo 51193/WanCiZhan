@@ -11,6 +11,18 @@ from django.views.generic import CreateView
 
 
 # Create your views here.
+
+def all_users():
+    return User.objects.all().values()
+
+
+def display_all_users():
+    print("正在输出所有用户")
+    user = all_users()
+    for i in range(user.count()):
+        print(user[i])
+
+
 def back(request):
     return render(request, "background.html")
 

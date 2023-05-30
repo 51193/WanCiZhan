@@ -16,6 +16,8 @@ class User(models.Model):
     client_number = models.CharField(max_length=20, verbose_name="账号")
     password = models.CharField(max_length=20, verbose_name="密码")
 
+    objects = models.Manager()
+
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['client_number'], name='client_number'),
@@ -40,6 +42,8 @@ class Admin(models.Model):
 
     admin_number = models.CharField(max_length=20, verbose_name="账号")
     password = models.CharField(max_length=20, verbose_name="密码")
+
+    objects = models.Manager()
 
     class Meta:
         constraints = [
