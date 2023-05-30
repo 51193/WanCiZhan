@@ -2,10 +2,17 @@ from django.db import models
 
 
 # Create your models here.
+# class VocabularyBookManager(models.Manager):
+#   def create_book(self, book_name, code):
+#       book = self.create(book_name=book_name, code=code)
+#       return book
 
-class VocabularyBooks(models.Model):
+
+class VocabularyBook(models.Model):
     book_name = models.CharField(max_length=50, verbose_name="单词书名称")
     code = models.CharField(max_length=1, verbose_name="单词书对应代码")
+
+    objects = models.Manager()
 
     class Meta:
         constraints = [
@@ -26,6 +33,8 @@ class Vocabulary(models.Model):
 
     # 通过子字符串匹配判断该单词被包含在哪些单词书中，
 
+    objects = models.Manager()
+
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['vocabulary'], name='vocabulary'),
@@ -33,3 +42,13 @@ class Vocabulary(models.Model):
 
     def __str__(self):
         return self.vocabulary
+
+
+class PersonalVocabularyBook:
+    client_number = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    vocabulary = models.ForeignKey('Vocabulary', on_delete=models.CASCADE)
+    first_met_date = models.DateField(None, None, False, True)
+    last_met_date = models.DateField(None, None, True, False)
+    is_remembered=models.BooleanField()
+
+    objects = models.Manager()

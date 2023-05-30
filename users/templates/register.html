@@ -7,16 +7,16 @@
     <link href="{% static 'css/register.css' %}" rel="stylesheet">
 </head>
 <body>
-    <div class="main-container">
-        <div class="register-container">
-            <div class="register-title">注册</div>
+<div class="main-container">
+    <div class="register-container">
+        <div class="register-title">注册</div>
 
-            <form method="post" class="form">
-                {% csrf_token %}
-                {{form.as_p}}
-                <p><input type="submit" value="注册" class="submit-button"/></p>
-            </form>
-        </div>
+        <form method="post" class="form">
+            {% csrf_token %}
+            {{form.as_p}}
+            <p><input type="submit" value="注册" class="submit-button"/></p>
+        </form>
     </div>
+</div>
 </body>
 </html>
