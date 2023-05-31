@@ -12,7 +12,11 @@ from vocabularies.models import Vocabulary
 from vocabularies.views import *
 from users.views import *
 
-print(today_vocabularies(1, '测试用例', 0))
+star_vocabulary(1, 'hello', True)
+
+display_staring_vocabularies(1)
+
+print(remember_line(1, 10))
 
 display_personal_vocabularies(1)
 

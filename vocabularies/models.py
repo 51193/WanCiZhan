@@ -51,5 +51,6 @@ class PersonalVocabularyBook(models.Model):
     first_met_date = models.DateField(None, None, False, True)
     last_met_date = models.DateField(None, None, True, False)
     is_remembered = models.BooleanField()
+    is_staring = models.BooleanField(default=False)
 
     objects = models.Manager()
