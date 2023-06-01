@@ -16,15 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 import users.views
 import vocabularies.views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('back/', users.views.back, name="back"),
-    path('login/', users.views.home, name="login"),
-    path('login/<slug:kind>', users.views.login, name="login"),
-    path('register/<slug:kind>', users.views.register, name='register'),
-    #path('test/', vocabularies.views.test, name="test")
-
-]
+                  path('', users.views.home, name="login"),
+                  path('admin/', admin.site.urls),
+                  path('back/', users.views.back, name="back"),
+                  path('login/', users.views.home, name="login"),
+                  path('login/<slug:kind>', users.views.login, name="login"),
+                  path('register/<slug:kind>', users.views.register, name='register'),
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
