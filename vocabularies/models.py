@@ -1,27 +1,97 @@
 from django.db import models
+import datetime
+
+from users.models import User
 
 
-# Create your models here.
-# class VocabularyBookManager(models.Manager):
-#   def create_book(self, book_name, code):
-#       book = self.create(book_name=book_name, code=code)
-#       return book
+def current_year():
+    # refer: https://stackoverflow.com/questions/49051017/year-field-in-django/49051348
+    return datetime.date.today().year
 
 
-class VocabularyBook(models.Model):
+def current_day():
+    return datetime.date.today()
+
+
+# 单词书
+class VocabularyBooks(models.Model):
+    # 名字和代码用来标识单词书
     book_name = models.CharField(max_length=50, verbose_name="单词书名称")
-    code = models.CharField(max_length=1, verbose_name="单词书对应代码")
+    code = models.CharField(max_length=10, verbose_name="单词书对应代码")
 
-    objects = models.Manager()
+    # 外键用户，当用户被删除，单词书也被删除。
+    user = models.ForeignKey(User, verbose_name="用户", on_delete=models.CASCADE)
 
     class Meta:
+        # 定义约束条件，保证user+code一定不一样
         constraints = [
-            models.UniqueConstraint(fields=['code'], name='code'),
-            models.UniqueConstraint(fields=['book_name'], name='book_name')
+            models.UniqueConstraint(fields=['user', 'code'], name='user_code')
         ]
 
     def __str__(self):
         return "%s(编号为:%s)" % (self.book_name, self.code)
+
+
+# 单词
+class Word(models.Model):
+    languages = [
+        ("Chinese", "中文"),
+        ("English", "英语")
+    ]
+    # 保存的单词和语言
+    word = models.CharField(max_length=50, verbose_name="词语")
+    translation = models.CharField(max_length=50, verbose_name="翻译")
+    language = models.CharField(max_length=30, verbose_name="语言", choices=languages)
+    # 保存的时间
+    save_day = models.CharField(max_length=20, verbose_name="保存时间", default=current_day())
+    # 上一次学习的时间
+    last_day = models.CharField(max_length=20, verbose_name="上次时间", default=current_day())
+    # 外键单词书，当单词书被删除，单词被删除
+    book = models.ForeignKey(VocabularyBooks, verbose_name="单词书", on_delete=models.CASCADE)
+
+    class Meta:
+        # 定义约束条件，保证word+language+book一定不一样
+        constraints = [
+            models.UniqueConstraint(fields=['word', 'language', 'book'], name='book_word')
+        ]
+
+    def __str__(self):
+        return "%s %s" % (self.languages, self.word)
+
+
+# 单词得分
+class WordScore(models.Model):
+    # 单词测试得分、第几次测试
+    score = models.IntegerField(verbose_name="得分")
+    times = models.IntegerField(verbose_name="次数", default=1)
+
+    # 外键单词，当单词被删除，单词得分被删除。
+    word = models.ForeignKey(Word, verbose_name="单词", on_delete=models.CASCADE)
+
+    class Meta:
+        # 定义约束条件，保证word+times一定不一样
+        constraints = [
+            models.UniqueConstraint(fields=['word', 'times'], name='word_times')
+        ]
+
+    def __str__(self):
+        return "%s %s" % (self.score, self.times)
+
+
+# 单词学习时间
+class WordTime(models.Model):
+    time = models.CharField(max_length=20, verbose_name="学习的时间")
+    # 外键单词
+    word = models.ForeignKey(Word, verbose_name="单词", on_delete=models.CASCADE)
+
+    class Meta:
+        # 定义约束条件，保证word+time一定不一样
+        constraints = [
+            models.UniqueConstraint(fields=['word', 'time'], name='word_time')
+        ]
+
+    def __str__(self):
+        return "%s %s" % (self.time, self.word)
 
 
 class Vocabulary(models.Model):
@@ -34,8 +104,6 @@ class Vocabulary(models.Model):
 
     # 通过子字符串匹配判断该单词被包含在哪些单词书中，
 
-    objects = models.Manager()
-
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['vocabulary'], name='vocabulary'),
@@ -43,14 +111,3 @@ class Vocabulary(models.Model):
 
     def __str__(self):
         return self.vocabulary
-
-
-class PersonalVocabularyBook(models.Model):
-    client_number = models.CharField(max_length=20, verbose_name="账号")
-    vocabulary = models.CharField(max_length=50, verbose_name="单词")
-    first_met_date = models.DateField(None, None, False, True)
-    last_met_date = models.DateField(None, None, True, False)
-    is_remembered = models.BooleanField()
-    is_staring = models.BooleanField(default=False)
-
-    objects = models.Manager()

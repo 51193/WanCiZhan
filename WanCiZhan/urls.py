@@ -16,17 +16,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from django.conf import settings
-from django.conf.urls.static import static
-
 import users.views
 import vocabularies.views
 
 urlpatterns = [
-                  path('', users.views.home, name="login"),
-                  path('admin/', admin.site.urls),
-                  path('back/', users.views.back, name="back"),
-                  path('login/', users.views.home, name="login"),
-                  path('login/<slug:kind>', users.views.login, name="login"),
-                  path('register/<slug:kind>', users.views.register, name='register'),
-              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('', users.views.home, name="login"),
+    path('admin/', admin.site.urls),
+    path('back/', users.views.back, name="back"),
+    path('login/', users.views.home, name="login"),
+    path('login/<slug:kind>', users.views.login, name="login"),
+    path('register/<slug:kind>', users.views.register, name='register'),
+    path('logout', users.views.logout, name='logout'),
+    path('updata/<slug:kind>', users.views.update, name="update"),
+
+    path('vacabulary/<slug:kind>', vocabularies.views.home, name="vocabulary"),
+    path('vacabulary/<slug:kind>/history', vocabularies.views.history, name='history'),
+    path('vacabulary/<slug:kind>/collections', vocabularies.views.collections, name='collections'),
+    path('vacabulary/<slug:kind>/vocabularyTest', vocabularies.views.vocabularyTest, name='vocabularyTest')
+
+]

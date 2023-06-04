@@ -34,3 +34,13 @@ class UserRegisterForm(forms.ModelForm):
             self.add_error('confirm_password', 'Password does not match.')
 
         return cleaned_data
+
+
+class UserUpdateForm(UserRegisterForm):
+    class Meta:
+        model = User
+        fields = ('nick_name',
+                  'password',
+                  'confirm_password',
+                  'gender',
+                  'email')
