@@ -1,6 +1,8 @@
 {% extends "nav.html" %}
 {% block title %}收藏记录{% endblock %}
 {% block content %}
+    {% load static %}
+    <link href="{% static 'css/list.css' %}" rel="stylesheet">
     <div class="main-container">
             <table class="item-list collection-list">
             <thead>

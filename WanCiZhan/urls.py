@@ -20,8 +20,8 @@ import users.views
 import vocabularies.views
 
 urlpatterns = [
-    path('', users.views.home, name="login"),
     path('admin/', admin.site.urls),
+    path('', users.views.home, name="login"),
     path('back/', users.views.back, name="back"),
     path('login/', users.views.home, name="login"),
     path('login/<slug:kind>', users.views.login, name="login"),
