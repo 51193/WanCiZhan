@@ -29,9 +29,10 @@ urlpatterns = [
     path('logout', users.views.logout, name='logout'),
     path('updata/<slug:kind>', users.views.update, name="update"),
 
-    path('vacabulary/<slug:kind>', vocabularies.views.home, name="vocabulary"),
-    path('vacabulary/<slug:kind>/history', vocabularies.views.history, name='history'),
-    path('vacabulary/<slug:kind>/collections', vocabularies.views.collections, name='collections'),
-    path('vacabulary/<slug:kind>/vocabularyTest', vocabularies.views.vocabularyTest, name='vocabularyTest')
-
+    path('vocabulary/<slug:kind>', vocabularies.views.home, name="vocabulary"),
+    path('vocabulary/<slug:kind>/history', vocabularies.views.history, name='history'),
+    path('vocabulary/<slug:kind>/collections', vocabularies.views.collections, name='collections'),
+    path('voabulary/<slug:kind>/vocabularyTest', vocabularies.views.vocabularyTest, name='vocabularyTest'),
+    path('check', vocabularies.views.check, name='check'),
+    path('vocabulary/<slug:kind>/show_score', vocabularies.views.show_score, name='show_score'),
 ]

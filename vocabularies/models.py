@@ -40,12 +40,13 @@ class Word(models.Model):
     ]
     # 保存的单词和语言
     word = models.CharField(max_length=50, verbose_name="词语")
-    translation = models.CharField(max_length=50, verbose_name="翻译")
+    translation = models.CharField(max_length=200, verbose_name="翻译")
     language = models.CharField(max_length=30, verbose_name="语言", choices=languages)
     # 保存的时间
-    save_day = models.CharField(max_length=20, verbose_name="保存时间", default=current_day())
+    save_day = models.DateField(verbose_name="保存时间", default=datetime.date.today)
     # 上一次学习的时间
-    last_day = models.CharField(max_length=20, verbose_name="上次时间", default=current_day())
+    last_day = models.DateField(verbose_name="上次时间", default=datetime.date.today)
+
     # 外键单词书，当单词书被删除，单词被删除
     book = models.ForeignKey(VocabularyBooks, verbose_name="单词书", on_delete=models.CASCADE)
 
@@ -57,6 +58,24 @@ class Word(models.Model):
 
     def __str__(self):
         return "%s %s" % (self.languages, self.word)
+
+
+# 单词测试问题
+class Question(models.Model):
+    # 问题描述
+    question_text = models.CharField(max_length=200, verbose_name="问题描述")
+    # 正确答案
+    answer = models.CharField(max_length=200, verbose_name="正确答案")
+    # 选项信息
+    choices = models.CharField(max_length=200, blank=True, verbose_name="选项信息")
+
+    # 外键单词。如果单词被删除了，那么问题也会被删除
+    word = models.ForeignKey(Word, verbose_name="单词", on_delete=models.CASCADE)
+
+    # 无需定义约束
+
+    def __str__(self):
+        return self.question_text
 
 
 # 单词得分

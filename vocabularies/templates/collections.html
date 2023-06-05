@@ -31,6 +31,9 @@
         </table>
 
     </div>
+    <br>
     <button type="button" name="返回主页" onclick='window.location.href=("{% url 'vocabulary' kind='User'%}")'>返回主页</button>
     <button type="button" name="单词测试" onclick='window.location.href=("{% url 'vocabularyTest' kind='User'%}")'>单词测试</button>
+    <br><br>
+    <button type="button" name="复习收藏单词" onclick='window.location.href=("{% url 'show_score' kind='User' %}")'>查看学习情况</button>
 {% endblock %}
