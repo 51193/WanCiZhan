@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的收藏</title>
+</head>
+<body>
+      {% for item in list %}
+        <p>{{ item.vocabulary }}  最后一次学习日期：{{item.last_met_date}}</p>
+      {% endfor %}
+</body>
+</html>

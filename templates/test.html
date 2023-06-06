@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单词测试</title>
+</head>
+<body>
+    {{vocabulary}}<br>
+    {%if rand1%}
+        {%if rand2%}
+            <a href="{% url 'begin_test' 'True' %}">{{correct}}<</a><br>
+            <a href="{% url 'begin_test' 'False' %}">{{f1}}<</a><br>
+            <a href="{% url 'begin_test' 'False' %}">{{f2}}<</a><br>
+            <a href="{% url 'begin_test' 'False' %}">{{f3}}<</a><br>
+        {%else%}
+            <a href="{% url 'begin_test' 'False' %}">{{f1}}<</a><br>
+            <a href="{% url 'begin_test' 'True' %}">{{correct}}<</a><br>
+            <a href="{% url 'begin_test' 'False' %}">{{f2}}<</a><br>
+            <a href="{% url 'begin_test' 'False' %}">{{f3}}<</a><br>
+        {%endif%}
+    {%else%}
+        {%if rand2%}
+            <a href="{% url 'begin_test' 'False' %}">{{f1}}<</a><br>
+            <a href="{% url 'begin_test' 'False' %}">{{f2}}<</a><br>
+            <a href="{% url 'begin_test' 'True' %}">{{correct}}<</a><br>
+            <a href="{% url 'begin_test' 'False' %}">{{f3}}<</a><br>
+        {%else%}
+            <a href="{% url 'begin_test' 'False' %}">{{f1}}<</a><br>
+            <a href="{% url 'begin_test' 'False' %}">{{f2}}<</a><br>
+            <a href="{% url 'begin_test' 'False' %}">{{f3}}<</a><br>
+            <a href="{% url 'begin_test' 'True' %}">{{correct}}<</a><br>
+        {%endif%}
+    {%endif%}
+</body>
+</html>

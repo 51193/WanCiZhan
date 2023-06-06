@@ -3,11 +3,11 @@ from django.shortcuts import render, HttpResponse, reverse, redirect
 # 导入常量
 from constants import INVALID_KIND
 # 导入格式
-from users.forms import UserLoginForm, AdminLoginForm, UserRegisterForm, UserUpdateForm
+from users.forms import UserLoginForm, AdminLoginForm, UserRegisterForm
 # 导入模型
 from users.models import Admin, User
 # 导入视图函数
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView
 
 
 # Create your views here.
@@ -62,13 +62,15 @@ def login(request, *args, **kwargs):
                         form.add_error("password", "密码不正确.")
                     else:
                         request.session['kind'] = kind
-                        request.session['user'] = uid
-                        request.session['id'] = user.id
+                        if request.session['kind'] == 'User':
+                            request.session['id'] = user.client_number
+                        else:
+                            request.session['id'] = user.admin_number
                         # successful login
-                        to_url = reverse("vocabulary", kwargs={'kind': kind})
-                        return redirect(to_url)
+                        # to_url = reverse("course", kwargs={'kind': kind})
+                        # return redirect(to_url)
+                        return redirect(reverse('main_page'))
 
-            return render(request, 'login_detail.html', {'form': form, 'kind': kind})
     else:
         context = {'kind': kind}
         if request.GET.get('uid'):
@@ -143,43 +145,6 @@ def register(request, kind):
         return HttpResponse(INVALID_KIND)
 
 
-def logout(request):
-    for sv in {"kind", "user", "id"}:
-        if request.session.get(sv):
-            del request.session[sv]
-
-    return redirect("login")
-
-
-class UpdateUserView(UpdateView):
-    model = User
-    form_class = UserUpdateForm
-    template_name = "update.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(UpdateUserView, self).get_context_data()
-        context.update(kwargs)
-        context["kind"] = "User"
-
-        return context
-
-    def get_success_url(self):
-        return reverse("vocabulary", kwargs={"kind": "User"})
-
-
-def update(request, kind):
-    func = None
-    if kind == "User":
-        func = UpdateUserView.as_view()
-    else:
-        return HttpResponse(INVALID_KIND)
-
-    pk = request.session.get("id")
-    if pk:
-        context = {
-            "name": request.session.get("name", ""),
-            "kind": request.session.get("kind", "")
-        }
-        return func(request, pk=pk, context=context)
-
-    return redirect("login")
+def users_home(request):
+    return render(request, 'home.html',
+                  {"id": User.objects.filter(client_number=request.session['id']).values('nick_name')[0]['nick_name']})

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+</head>
+<body>
+<div class="main-container">
+    <div class="user_detail">
+        欢迎！{{id}}
+    </div>
+
+    <div class="buttons">
+        <form method='post' action='recite'>
+            <select id="book" name="book">
+			    <option value='t'>测试用例</option>
+		    </select><br>
+             {% csrf_token %}
+            <input type="number" name="review" placeholder="复习的单词个数"/><br>
+            <input type="number" name="new" placeholder="新单词的个数"><br>
+            <input type="submit" value="开始背单词！"><br>
+        </form>
+
+         <form method='post' action='display_book'>
+            <select id="book" name="book">
+			    <option value='t'>测试用例</option>
+		    </select>
+             {% csrf_token %}
+            <input type="submit" value="显示该书单词">
+        </form>
+
+
+         <form method='post' action='display_personal'>
+             {% csrf_token %}
+            <input type="submit" value="我的单词">
+        </form>
+
+
+         <form method='post' action='display_star'>
+             {% csrf_token %}
+            <input type="submit" value="我收藏的单词">
+        </form>
+
+        <form method='post' action='test'>
+            <input type="number" name="count" placeholder="测试单词个数"/>
+             {% csrf_token %}
+            <input type="submit" value="单词测试">
+        </form>
+
+        <form method='post' action='display_r_line'>
+            <select id="count" name="count">
+			    <option value=7>近7天</option>
+			    <option value=15>近15天</option>
+			    <option value=30>近30天</option>
+		    </select>
+             {% csrf_token %}
+            <input type="submit" value="我的记忆曲线">
+        </form>
+
+        <a href="javascript:history.back(-1)">回退<</a>
+    </div>
+</div>
+
+</body>
+</html>

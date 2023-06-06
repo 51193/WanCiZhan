@@ -12,7 +12,7 @@ from vocabularies.models import Vocabulary
 from vocabularies.views import *
 from users.views import *
 
-star_vocabulary(1, 'hello', True)
+print(translate('hello'))
 
 display_staring_vocabularies(1)
 
