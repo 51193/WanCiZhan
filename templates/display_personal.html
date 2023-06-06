@@ -5,8 +5,9 @@
     <title>我的单词</title>
 </head>
 <body>
+        <a href="/home">回退</a>
       {% for item in list %}
-        <p>{{ item.vocabulary }}  最后一次学习日期：{{item.last_met_date}}  是否需要复习：{{item.is_remembered}}</p>
+        <p><a href="{% url 'vocabulary_detail_extra' item.vocabulary %}">{{ item.vocabulary }}</a>  最后一次学习日期：{{item.last_met_date}}  是否需要复习：{{item.is_remembered}}</p>
       {% endfor %}
 </body>
 </html>

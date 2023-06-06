@@ -8,12 +8,11 @@ import django
 django.setup()
 
 # 必须要在 初始化django 之后导入 models
-from vocabularies.models import Vocabulary
 from vocabularies.views import *
 from users.views import *
+from users.models import *
 
-print(translate('hello'))
-
+add_vocabulary_book('随便加一个', 'q')
 display_staring_vocabularies(1)
 
 print(remember_line(1, 10))

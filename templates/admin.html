@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员</title>
+</head>
+<body>
+    <form method='post' action='add_vocabulary'>
+             {% csrf_token %}
+            <input type="text" name="vocabulary" placeholder="单词"/><br>
+            <input type="text" name="Chinese" placeholder="中文翻译"><br>
+            <input type="text" name="sentence" placeholder="句子"><br>
+            <input type="text" name="Chinese_sentence" placeholder="句子的翻译"><br>
+            <input type="submit" value="创建新单词！"><br>
+    </form>
+
+    <form method='post' action='distribute_vocabulary'>
+             {% csrf_token %}
+            <input type="text" name="vocabulary" placeholder="单词"/><br>
+            <select id="book" name="book">
+                {% for item in books %}
+			        <option value={{item.code}}>{{item.book_name}}</option>
+                {% endfor %}
+		    </select><br>
+            <input type="submit" value="分配单词！"><br>
+    </form>
+
+    <form method='post' action='display_book'>
+            <select id="book" name="book">
+                {% for item in books %}
+			        <option value={{item.code}}>{{item.book_name}}</option>
+                {% endfor %}
+		    </select>
+             {% csrf_token %}
+            <input type="submit" value="显示该书单词">
+    </form>
+
+    <form method='post' action='delete_user'>
+            {% csrf_token %}
+            <input type="text" name="client_number" placeholder="用户账号"><br>
+            <input type="submit" value="销号！"><br>
+    </form>
+
+    <a href="{% url 'logout' %}">退出<</a>
+</body>
+</html>

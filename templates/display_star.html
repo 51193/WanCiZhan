@@ -5,8 +5,9 @@
     <title>我的收藏</title>
 </head>
 <body>
+       <a href="javascript:history.back(-1)">回退<</a>
       {% for item in list %}
-        <p>{{ item.vocabulary }}  最后一次学习日期：{{item.last_met_date}}</p>
+        <p><a href="{% url 'vocabulary_detail_extra' item.vocabulary %}">{{ item.vocabulary }}</a>  最后一次学习日期：{{item.last_met_date}}</p>
       {% endfor %}
 </body>
 </html>

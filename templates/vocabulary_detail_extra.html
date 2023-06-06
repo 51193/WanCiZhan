@@ -11,15 +11,15 @@
         {%if is_staring%}
         <form method='post' action='star'>
             {% csrf_token %}
-             <a href="{% url 'star' 'recite' %}">取消收藏<</a>
+             <a href="{% url 'star' 'home' %}">取消收藏<</a>
         </form>
         {%else%}
         <form method='post' action='star'>
             {% csrf_token %}
-             <a href="{% url 'star' 'recite' %}">收藏<</a>
+             <a href="{% url 'star' 'home' %}">收藏<</a>
         </form>
         {%endif%}
-        <a href="{% url 'vocabulary'%}">下一个<</a>
+        <a href="{% url 'main_page'%}">返回<</a>
     </div>
 </head>
 <body>

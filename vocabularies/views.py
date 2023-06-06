@@ -320,13 +320,16 @@ def display_star(request):
     return render(request, 'display_star.html', {'list': vocabulary})
 
 
-def star(request):
+def star(request, condition):
     star_vocabulary(int(request.session['id']), request.session['vocabulary'],
                     not PersonalVocabularyBook.objects.filter(
                         client_number=int(request.session['id'])).filter(
                         vocabulary=request.session['vocabulary']).values(
                         'is_staring')[0]['is_staring'])
-    return redirect(reverse('vocabulary_detail'))
+    if condition == 'recite':
+        return redirect(reverse('vocabulary_detail'))
+    else:
+        return vocabulary_detail(request,request.session['vocabulary'])
 
 
 def recite_detail_noarg(request):
@@ -380,12 +383,13 @@ def test(request):
     t_list = []
     if count < len(l):
         t_list = random.sample(l, count)
+        request.session['test_total'] = count
     else:
         t_list = l
+        request.session['test_total'] = len(l)
     random.shuffle(t_list)
     json_str = json.dumps(t_list)
     request.session['test_list'] = json_str
-    request.session['test_total'] = count
     request.session['test_correct'] = 0
     return redirect(reverse('begin_test'))
 
@@ -419,7 +423,6 @@ def begin_test_noarg(request):
 
 
 def begin_test(request, is_correct):
-
     if is_correct == "True":
         request.session['test_correct'] += 1
 
@@ -455,3 +458,33 @@ def finish_test(request):
     total = request.session['test_total']
     correct = request.session['test_correct']
     return render(request, 'finish_test.html', {'total': total, 'correct': correct})
+
+
+def add_vocabulary_admin(request):
+    vocabulary = request.POST.get('vocabulary')
+    Chinese = request.POST.get('Chinese')
+    sentence = request.POST.get('sentence')
+    Chinese_sentence = request.POST.get('Chinese_sentence')
+    add_vocabulary(vocabulary, Chinese, sentence, Chinese_sentence)
+    return redirect(reverse('main_page'))
+
+
+def distribute_vocabulary_admin(request):
+    book = VocabularyBook.objects.filter(code=request.POST.get('book')).values('book_name')[0]['book_name']
+    vocabulary = request.POST.get('vocabulary')
+    distribute_vocabulary(vocabulary, book)
+    return redirect(reverse('main_page'))
+
+
+def vocabulary_detail(request, vocabulary):
+    request.session['vocabulary'] = vocabulary
+    return render(request, 'vocabulary_detail_extra.html',
+                  {'vocabulary': vocabulary,
+                   'Chinese': translate(vocabulary),
+                   'sentence': Vocabulary.objects.filter(vocabulary=vocabulary).values('sentence')[0]['sentence'],
+                   'Chinese_sentence': Vocabulary.objects.filter(vocabulary=vocabulary).values('chinese_sentence')[0][
+                       'chinese_sentence'],
+                   'is_staring': PersonalVocabularyBook.objects.filter(
+                       client_number=int(request.session['id'])).filter(vocabulary=vocabulary).values(
+                       'is_staring')[0]['is_staring']
+                   })

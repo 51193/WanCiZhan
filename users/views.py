@@ -8,6 +8,7 @@ from users.forms import UserLoginForm, AdminLoginForm, UserRegisterForm
 from users.models import Admin, User
 # 导入视图函数
 from django.views.generic import CreateView
+from vocabularies.views import all_vocabulary_books
 
 
 # Create your views here.
@@ -92,6 +93,14 @@ def login(request, *args, **kwargs):
         return render(request, 'login_detail.html', context)
 
 
+def logout(request):
+    if request.session.get("kind", ""):
+        del request.session["kind"]
+    if request.session.get("id", ""):
+        del request.session["id"]
+    return redirect(reverse("login"))
+
+
 class CreateUserView(CreateView):
     model = User
     form_class = UserRegisterForm
@@ -146,5 +155,17 @@ def register(request, kind):
 
 
 def users_home(request):
-    return render(request, 'home.html',
-                  {"id": User.objects.filter(client_number=request.session['id']).values('nick_name')[0]['nick_name']})
+    books = all_vocabulary_books()
+    if request.session['kind'] == "Admin":
+        return render(request, 'admin.html', {'books': books})
+    else:
+        return render(request, 'home.html', {
+            'books': books,
+            "id": User.objects.filter(client_number=request.session['id']).values('nick_name')[0]['nick_name']})
+
+
+def delete_user(request):
+    client_number = request.POST.get('client_number')
+    if User.objects.filter(client_number=client_number).exists():
+        User.objects.filter(client_number=client_number).delete()
+    return redirect(reverse('main_page'))
