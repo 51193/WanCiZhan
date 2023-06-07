@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户清单</title>
+</head>
+<body>
+       <a href="javascript:history.back(-1)">回退<</a>
+      {% for item in user %}
+        <p>用户账号：{{ item.client_number }}  用户昵称：{{item.nick_name}}</p>
+      {% endfor %}
+</body>
+</html>

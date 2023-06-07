@@ -35,10 +35,22 @@
             <input type="submit" value="显示该书单词">
     </form>
 
+
+    <form method='post' action='display_user'>
+             {% csrf_token %}
+            <input type="submit" value="查看全部用户">
+    </form>
+
     <form method='post' action='delete_user'>
             {% csrf_token %}
             <input type="text" name="client_number" placeholder="用户账号"><br>
             <input type="submit" value="销号！"><br>
+    </form>
+
+    <form method='post' action='reset_password'>
+            {% csrf_token %}
+            <input type="text" name="client_number" placeholder="用户账号"><br>
+            <input type="submit" value="重置密码！"><br>
     </form>
 
     <a href="{% url 'logout' %}">退出<</a>

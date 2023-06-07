@@ -361,7 +361,6 @@ def translate(word):
     # UA伪装
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3741.400 QQBrowser/10.5.3863.400'
-
     }
     # post请求参数处理（同get请求一致）
     data = {
@@ -488,3 +487,4 @@ def vocabulary_detail(request, vocabulary):
                        client_number=int(request.session['id'])).filter(vocabulary=vocabulary).values(
                        'is_staring')[0]['is_staring']
                    })
+

@@ -13,52 +13,66 @@
     <div class="buttons">
         <form method='post' action='recite'>
             <select id="book" name="book">
-            {% for item in books %}
-			    <option value={{item.code}}>{{item.book_name}}</option>
-            {% endfor %}
-		    </select><br>
-             {% csrf_token %}
+                {% for item in books %}
+                <option value={{item.code}}>{{item.book_name}}</option>
+                {% endfor %}
+            </select><br>
+            {% csrf_token %}
             <input type="number" name="review" placeholder="复习的单词个数"/><br>
             <input type="number" name="new" placeholder="新单词的个数"><br>
             <input type="submit" value="开始背单词！"><br>
         </form>
 
-         <form method='post' action='display_book'>
+        <form method='post' action='display_book'>
             <select id="book" name="book">
                 {% for item in books %}
-			        <option value={{item.code}}>{{item.book_name}}</option>
+                <option value={{item.code}}>{{item.book_name}}</option>
                 {% endfor %}
-		    </select>
-             {% csrf_token %}
+            </select>
+            {% csrf_token %}
             <input type="submit" value="显示该书单词">
         </form>
 
 
-         <form method='post' action='display_personal'>
-             {% csrf_token %}
+        <form method='post' action='display_personal'>
+            {% csrf_token %}
             <input type="submit" value="我的单词">
         </form>
 
 
-         <form method='post' action='display_star'>
-             {% csrf_token %}
+        <form method='post' action='display_star'>
+            {% csrf_token %}
             <input type="submit" value="我收藏的单词">
         </form>
 
         <form method='post' action='test'>
             <input type="number" name="count" placeholder="测试单词个数"/>
-             {% csrf_token %}
+            {% csrf_token %}
             <input type="submit" value="单词测试">
         </form>
 
         <form method='post' action='display_r_line'>
             <select id="count" name="count">
-			    <option value=7>近7天</option>
-			    <option value=15>近15天</option>
-			    <option value=30>近30天</option>
-		    </select>
-             {% csrf_token %}
+                <option value=7>近7天</option>
+                <option value=15>近15天</option>
+                <option value=30>近30天</option>
+            </select>
+            {% csrf_token %}
             <input type="submit" value="我的记忆曲线">
+        </form>
+
+
+        <form method='post' action='change_password'>
+            {% csrf_token %}
+            <input type="text" name="password" placeholder="新密码"><br>
+            <input type="submit" value="修改密码"><br>
+        </form>
+
+
+        <form method='post' action='change_nick_name'>
+            {% csrf_token %}
+            <input type="text" name="nick_name" placeholder="新昵称"><br>
+            <input type="submit" value="修改昵称"><br>
         </form>
 
         <a href="{% url 'logout' %}">退出<</a>

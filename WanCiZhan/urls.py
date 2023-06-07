@@ -52,6 +52,10 @@ urlpatterns = [
                   path('home/distribute_vocabulary', vocabularies.views.distribute_vocabulary_admin,
                        name='distribute_vocabulary'),
                   path('home/delete_user', users.views.delete_user, name='delete_user'),
+                  path('home/reset_password', users.views.reset_password, name='reset_password'),
                   path('home/detail/<slug:vocabulary>', vocabularies.views.vocabulary_detail,
-                       name='vocabulary_detail_extra')
+                       name='vocabulary_detail_extra'),
+                  path('home/change_password', users.views.change_password, name='change_password'),
+                  path('home/change_nick_name', users.views.change_nick_name, name='change_nick_name'),
+                  path('home/display_user', users.views.display_user, name='display_user')
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

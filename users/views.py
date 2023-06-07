@@ -169,3 +169,26 @@ def delete_user(request):
     if User.objects.filter(client_number=client_number).exists():
         User.objects.filter(client_number=client_number).delete()
     return redirect(reverse('main_page'))
+
+
+def reset_password(request):
+    client_number = request.POST.get('client_number')
+    if User.objects.filter(client_number=client_number).exists():
+        User.objects.filter(client_number=client_number).update(password='000000')
+    return redirect(reverse('main_page'))
+
+
+def change_password(request):
+    password = request.POST.get('password')
+    User.objects.filter(client_number=request.session['id']).update(password=password)
+    return redirect(reverse('login'))
+
+
+def change_nick_name(request):
+    nick_name = request.POST.get('nick_name')
+    User.objects.filter(client_number=request.session['id']).update(nick_name=nick_name)
+    return redirect(reverse('main_page'))
+
+
+def display_user(request):
+    return render(request, 'display_user.html', {'user': all_users()})
